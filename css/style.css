@@ -54,3 +54,23 @@ body {
     width: 80%;
     margin: auto;
 } */
+
+.graphSection {
+    width: 80%;
+    margin: auto;
+    background-color: white;
+}
+
+.myCanvas {
+    background-color: white;
+    border: 1px solid black;
+    margin: 35px 35px;
+    padding: 10px 10px;
+}
+
+.clear {
+    border: none !important;
+    margin: 20px 224px;
+    margin-top: 0%;
+    /* margin-left: 29px; */
+}

@@ -9,14 +9,17 @@
         var zeros = [
             [1, 0]
         ]
-        var tempZeros = [[]]
+        var tempZeros = [
+            []
+        ]
         var Truezeros = [
-            [1,0]
+            [1, 0]
         ]
 
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         DrawZerosPoles();
+
         function DrawZerosPoles() {
             ctx.clearRect(0, 0, c.width, c.height);
 
@@ -55,37 +58,39 @@
                 ctx.stroke();
             };
             for (idx = 0; idx < zeros.length; idx++) {
-                var x = zeros[idx][0]-10;
-                var y = zeros[idx][1]-10;
-                Truezeros = [[Math.round((x-radius)/radius),Math.round((radius-y)/radius)]]
+                var x = zeros[idx][0] - 10;
+                var y = zeros[idx][1] - 10;
+                Truezeros = [
+                    [Math.round((x - radius) / radius), Math.round((radius - y) / radius)]
+                ]
                 ctx.beginPath();
                 ctx.arc(x, y, zSize, 0, 2 * Math.PI);
                 ctx.stroke();
             };
         };
 
-        function AddPoles() 
-        {
-            poles = 
-            [
+        function AddPoles() {
+            poles = [
                 [0.75, 0.34],
                 [0.75, -0.34]
             ]
             DrawZerosPoles();
         };
 
-        function AddZeros() 
-        {   
+        function AddZeros() {
             zeros = tempZeros;
             DrawZerosPoles();
         };
 
-        function showCoords(event) 
-        {
+        function showCoords(event) {
             var x = event.offsetX;
             var y = event.offsetY;
-            zeros = [[x,y]];
-            tempZeros = [[x,y]];
+            zeros = [
+                [x, y]
+            ];
+            tempZeros = [
+                [x, y]
+            ];
             DrawZerosPoles()
         }
 
@@ -113,3 +118,25 @@
             ];
             DrawZerosPoles();
         };
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Magnitude', 'Phase'],
+                ['2004', 1000, 400],
+                ['2005', 1170, 460],
+                ['2006', 660, 1120],
+                ['2007', 1030, 540]
+            ]);
+
+            var options = {
+                title: 'Frequency Response',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }

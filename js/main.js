@@ -1,17 +1,29 @@
         var radius = 100; // radius of unit circle
         var pSize = 4; // size of pole and zero graphic
         var zSize = 4;
-
-        var poles = [
+        // arrays index used to select specific pole or zero
+        currentIndx = 0;
+        // flags to know which one to be moved
+        zeroFlag = false;
+        poleFlag = false;
+        //poles values related to the html coordinates
+        var poles = []
+        // saves poles values related to the html coordinates (btfdl mwgoda lma nms7 kol l poles)
+        var tempPoles = [
+            []
+        ]
+        // usable poles values -1 -> 1 (hnst5dmha f l calculations)
+        var Truepoles = [
             [0.75, 0.34],
             [0.75, -0.34]
         ]
-        var zeros = [
-            [1, 0]
-        ]
+        //zeros values related to the html coordinates
+        var zeros = []
+        // saves zeros values related to the html coordinates (btfdl mwgoda lma nms7 kol l zeros)
         var tempZeros = [
             []
         ]
+        // usable zeros values -1 -> 1 (hnst5dmha f l calculations)
         var Truezeros = [
             [1, 0]
         ]
@@ -48,74 +60,74 @@
             var idx;
 
             for (idx = 0; idx < poles.length; idx++) {
-                var x = radius + Math.round(radius * poles[idx][0]);
-                var y = radius - Math.round(radius * poles[idx][1]);
+                var x = poles[idx][0] - 10;
+                var y = poles[idx][1] - 10;
                 ctx.beginPath();
-                ctx.moveTo(x - pSize + pad, y - pSize + pad);
-                ctx.lineTo(x + pSize + pad, y + pSize + pad);
-                ctx.moveTo(x - pSize + pad, y + pSize + pad);
-                ctx.lineTo(x + pSize + pad, y - pSize + pad);
+                ctx.moveTo(x - pSize , y - pSize );
+                ctx.lineTo(x + pSize , y + pSize );
+                ctx.moveTo(x - pSize , y + pSize );
+                ctx.lineTo(x + pSize , y - pSize );
                 ctx.stroke();
             };
             for (idx = 0; idx < zeros.length; idx++) {
                 var x = zeros[idx][0] - 10;
                 var y = zeros[idx][1] - 10;
-                Truezeros = [
-                    [Math.round((x - radius) / radius), Math.round((radius - y) / radius)]
-                ]
+
+                Truezeros.push([(x - radius) / radius, (radius - y) / radius]);
+                
                 ctx.beginPath();
-                ctx.arc(x, y, zSize, 0, 2 * Math.PI);
+                ctx.arc(x , y , zSize, 0, 2 * Math.PI);
                 ctx.stroke();
             };
         };
 
         function AddPoles() {
-            poles = [
-                [0.75, 0.34],
-                [0.75, -0.34]
-            ]
+            var x = radius + (radius * 0.75) ;
+            var y = radius - (radius * 0.34) ;
+            poles.push([x + 32,y + 32]);
             DrawZerosPoles();
         };
 
         function AddZeros() {
-            zeros = tempZeros;
+            var x = radius + (radius * 0) ;
+            var y = radius - (radius * 0) ;
+            zeros.push([x + 32,y + 32]);
             DrawZerosPoles();
         };
+        function updateMenu(){
 
+        }
         function showCoords(event) {
             var x = event.offsetX;
             var y = event.offsetY;
-            zeros = [
-                [x, y]
-            ];
-            tempZeros = [
-                [x, y]
-            ];
-            DrawZerosPoles()
+            if (zeroFlag){
+                zeros[currentIndx][0] = x
+                zeros[currentIndx][1] = y
+                tempZeros = zeros
+                DrawZerosPoles()
+            }
+            else if(poleFlag){
+                poles[currentIndx][0] = x
+                poles[currentIndx][1] = y
+                tempPoles = poles
+                DrawZerosPoles()
+            }
         }
 
         function clearZeros() {
-            zeros = [
-                []
-            ];
+            zeros = [];
             DrawZerosPoles()
 
         };
 
         function clearPoles() {
-            poles = [
-                []
-            ];
+            poles = [];
             DrawZerosPoles();
         };
 
         function clearAll() {
-            poles = [
-                []
-            ];
-            zeros = [
-                []
-            ];
+            poles = [];
+            zeros = [];
             DrawZerosPoles();
         };
         google.charts.load('current', { 'packages': ['corechart'] });

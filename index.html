@@ -47,10 +47,30 @@
                 </div>
                 <div class="UnitCircleButtons">
                     <button type="button" class="btn btn-dark" onclick="AddZeros()">Add Zero</button>
-                    <button type=" button " class="btn btn-dark " onclick="AddPoles() ">Add Poles</button>
+                    <button type=" button " class="btn btn-dark " onclick="AddPoles() ">Add Pole</button>
                     <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Clear
+                        Zeroes
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item "  onclick="currentIndx = 0; zeroFlag = true; poleFlag = false; ">Zero1</a>
+                            <a class="dropdown-item "  onclick="currentIndx = 1; zeroFlag = true; poleFlag = false;  ">Zero2</a>
+                            <a class="dropdown-item "  onclick="currentIndx = 2; zeroFlag = true; poleFlag = false;  ">Zero3</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Poles
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item "  onclick="currentIndx = 0; zeroFlag = false; poleFlag = true; ">Pole1</a>
+                            <a class="dropdown-item "  onclick="currentIndx = 1; zeroFlag = false; poleFlag = true;  ">Pole2</a>
+                            <a class="dropdown-item "  onclick="currentIndx = 2; zeroFlag = false; poleFlag = true;  ">Pole3</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Clear
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item " href="# " onclick="clearZeros() ">Clear All Zeroes</a>

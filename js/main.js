@@ -9,24 +9,15 @@
         //poles values related to the html coordinates
         var poles = []
         // saves poles values related to the html coordinates (btfdl mwgoda lma nms7 kol l poles)
-        var tempPoles = [
-            []
-        ]
+        var tempPoles = []
         // usable poles values -1 -> 1 (hnst5dmha f l calculations)
-        var Truepoles = [
-            [0.75, 0.34],
-            [0.75, -0.34]
-        ]
+        var Truepoles = []
         //zeros values related to the html coordinates
         var zeros = []
         // saves zeros values related to the html coordinates (btfdl mwgoda lma nms7 kol l zeros)
-        var tempZeros = [
-            []
-        ]
+        var tempZeros = []
         // usable zeros values -1 -> 1 (hnst5dmha f l calculations)
-        var Truezeros = [
-            [1, 0]
-        ]
+        var Truezeros = []
 
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -34,9 +25,9 @@
 
         function DrawZerosPoles() {
             ctx.clearRect(0, 0, c.width, c.height);
-
+            
             var pad = (c.width - 2 * radius) / 2; // padding on each side
-
+            
             // unit circle
             ctx.beginPath();
             ctx.strokeStyle = "red";
@@ -50,7 +41,7 @@
             ctx.lineTo(radius + pad, c.height);
             ctx.font = "italic 8px sans-serif";
             ctx.fillText("Imaginary", radius + pad + 2, pad - 2);
-
+            
             // x axis
             ctx.moveTo(0, radius + pad);
             ctx.lineTo(c.width, radius + pad);
@@ -58,10 +49,13 @@
             ctx.stroke(); // Draw it
             ctx.strokeStyle = "blue";
             var idx;
-
+            
             for (idx = 0; idx < poles.length; idx++) {
                 var x = poles[idx][0] - 10;
                 var y = poles[idx][1] - 10;
+                
+                Truepoles.push([(x - radius) / radius, (radius - y) / radius]);
+                
                 ctx.beginPath();
                 ctx.moveTo(x - pSize , y - pSize );
                 ctx.lineTo(x + pSize , y + pSize );
@@ -72,7 +66,7 @@
             for (idx = 0; idx < zeros.length; idx++) {
                 var x = zeros[idx][0] - 10;
                 var y = zeros[idx][1] - 10;
-
+                
                 Truezeros.push([(x - radius) / radius, (radius - y) / radius]);
                 
                 ctx.beginPath();
@@ -117,7 +111,6 @@
         function clearZeros() {
             zeros = [];
             DrawZerosPoles()
-
         };
 
         function clearPoles() {
@@ -147,8 +140,8 @@
                 curveType: 'function',
                 legend: { position: 'bottom' }
             };
-
+            
             var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
+            
             chart.draw(data, options);
         }

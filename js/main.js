@@ -6,39 +6,38 @@
         // flags to know which one to be moved
         zeroFlag = false;
         poleFlag = false;
+
+        var conjucateFlag = false;
         //poles values related to the html coordinates
         var poles = []
-        var polesConj = [[0,0],[0,0],[0,0]]
         // saves poles values related to the html coordinates (btfdl mwgoda lma nms7 kol l poles)
-        var tempPoles = [
-            []
-        ]
+        var tempPoles = []
         // usable poles values -1 -> 1 (hnst5dmha f l calculations)
-        var Truepoles = [
-            [0.75, 0.34],
-            [0.75, -0.34]
-        ]
+        var Truepoles = []
         //zeros values related to the html coordinates
         var zeros = []
-        var zerosConj = [[0,0],[0,0],[0,0]]
         // saves zeros values related to the html coordinates (btfdl mwgoda lma nms7 kol l zeros)
-        var tempZeros = [
-            []
-        ]
+        var tempZeros = []
         // usable zeros values -1 -> 1 (hnst5dmha f l calculations)
-        var Truezeros = [
-            [1, 0]
-        ]
-
+        var Truezeros = []
+        // array con taining the Indices of conjucated zeros
+        var conjucatedZeros = []
+        // array containing the Indices of conjucated poles
+        var conjucatedPoles = []
+        // array saves the index of the poles array that conjucated
+        var whichConjpoles = []
+        // array saves the index of the zeros array that conjucated
+        var whichConjzeros = []
+        
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         DrawZerosPoles();
 
         function DrawZerosPoles() {
             ctx.clearRect(0, 0, c.width, c.height);
-
+            
             var pad = (c.width - 2 * radius) / 2; // padding on each side
-
+            
             // unit circle
             ctx.beginPath();
             ctx.strokeStyle = "red";
@@ -52,7 +51,7 @@
             ctx.lineTo(radius + pad, c.height);
             ctx.font = "italic 8px sans-serif";
             ctx.fillText("Imaginary", radius + pad + 2, pad - 2);
-
+            
             // x axis
             ctx.moveTo(0, radius + pad);
             ctx.lineTo(c.width, radius + pad);
@@ -60,10 +59,13 @@
             ctx.stroke(); // Draw it
             ctx.strokeStyle = "blue";
             var idx;
-
+            Truepoles = []
             for (idx = 0; idx < poles.length; idx++) {
                 var x = poles[idx][0] - 10;
                 var y = poles[idx][1] - 10;
+                
+                Truepoles.push([((x-22) - radius) / radius, (radius - (y-22)) / radius]);
+                
                 ctx.beginPath();
                 ctx.moveTo(x - pSize , y - pSize );
                 ctx.lineTo(x + pSize , y + pSize );
@@ -71,34 +73,12 @@
                 ctx.lineTo(x + pSize , y - pSize );
                 ctx.stroke();
             };
-
+            Truezeros = []
             for (idx = 0; idx < zeros.length; idx++) {
                 var x = zeros[idx][0] - 10;
                 var y = zeros[idx][1] - 10;
-
-                Truezeros.push([(x - radius) / radius, (radius - y) / radius]);
                 
-                ctx.beginPath();
-                ctx.arc(x , y , zSize, 0, 2 * Math.PI);
-                ctx.stroke();
-            };
-
-            for (idx = 0; idx < polesConj.length; idx++) {
-                var x = polesConj[idx][0] - 10;
-                var y = polesConj[idx][1] - 10;
-                ctx.beginPath();
-                ctx.moveTo(x - pSize , y - pSize );
-                ctx.lineTo(x + pSize , y + pSize );
-                ctx.moveTo(x - pSize , y + pSize );
-                ctx.lineTo(x + pSize , y - pSize );
-                ctx.stroke();
-            };
-
-            for (idx = 0; idx < zerosConj.length; idx++) {
-                var x = zerosConj[idx][0] - 10;
-                var y = zerosConj[idx][1] - 10;
-
-                // Truezeros.push([(x - radius) / radius, (radius - y) / radius]);
+                Truezeros.push([((x-22) - radius) / radius, (radius - (y-22)) / radius]);
                 
                 ctx.beginPath();
                 ctx.arc(x , y , zSize, 0, 2 * Math.PI);
@@ -106,47 +86,22 @@
             };
         };
 
-
-
-
-
         function AddPoles() {
             var x = radius + (radius * 0.75) ;
             var y = radius - (radius * 0.34) ;
-            poles.push([x + 32,y + 32]);
+            poles.push([x + 32, y + 32]);
             DrawZerosPoles();
         };
 
         function AddZeros() {
             var x = radius + (radius * 0) ;
             var y = radius - (radius * 0) ;
-            zeros.push([x + 32,y + 32]);
+            zeros.push([x + 32, y + 32]);
             DrawZerosPoles();
         };
-
-
-        function Conjugate() {
-
-            if (zeroFlag){
-                zerosConj[currentIndx][0] = zeros[currentIndx][0];
-                zerosConj[currentIndx][1] = 264-zeros[currentIndx][1];
-                DrawZerosPoles();
-            }
-
-            else if(poleFlag){
-                polesConj[currentIndx][0] = poles[currentIndx][0];
-                polesConj[currentIndx][1] = 264- poles[currentIndx][1];
-
-                DrawZerosPoles();
-            }
-        };
-
-
         function updateMenu(){
 
         }
-
-
         function showCoords(event) {
             var x = event.offsetX;
             var y = event.offsetY;
@@ -155,31 +110,116 @@
                 zeros[currentIndx][1] = y
                 tempZeros = zeros
                 DrawZerosPoles()
+                for(var idx=0; idx<conjucatedZeros.length; idx++){
+                    if (conjucatedZeros[idx][0] === currentIndx){
+                        var conjIdx = conjucatedZeros[idx][1];
+                        Truezeros[conjIdx][0] = Truezeros[currentIndx][0]
+                        Truezeros[conjIdx][1] = -Truezeros[currentIndx][1]
+                        tempx = radius + (radius * Truezeros[conjIdx][0]);
+                        tempy = radius - (radius * Truezeros[conjIdx][1]);
+                        zeros[conjIdx] = [tempx + 32,tempy + 32];
+                    }
+                }
             }
-            else if(poleFlag){
+            if (poleFlag){
                 poles[currentIndx][0] = x
                 poles[currentIndx][1] = y
                 tempPoles = poles
                 DrawZerosPoles()
+                for(var idx=0; idx<conjucatedPoles.length; idx++){
+                    if (conjucatedPoles[idx][0] === currentIndx){
+                        var conjIdx = conjucatedPoles[idx][1];
+                        Truepoles[conjIdx][0] = Truepoles[currentIndx][0]
+                        Truepoles[conjIdx][1] = -Truepoles[currentIndx][1]
+                        tempx = radius + (radius * Truepoles[conjIdx][0]);
+                        tempy = radius - (radius * Truepoles[conjIdx][1]);
+                        poles[conjIdx] = [tempx + 32,tempy + 32];
+                    }
+                }
+            }
+            DrawZerosPoles()
+        }
+        
+        function Conjugate(){
+            conjucateFlag = true
+            var x;
+            var y;
+            var tempx;
+            var tempy;
+            if (zeroFlag){
+                x = Truezeros[currentIndx][0]
+                y = Truezeros[currentIndx][1]
+                if (!Truezeros.includes([x, -y]) && !whichConjzeros.includes(currentIndx)){
+                    tempx = radius + (radius * x);
+                    tempy = radius - (radius * -y);
+                    zeros.push([tempx + 32,tempy + 32]);
+                    conjucatedZeros.push([currentIndx, zeros.length-1])
+                    whichConjzeros.push(currentIndx)
+                }
+            }
+            else if(poleFlag){
+                x = Truepoles[currentIndx][0]
+                y = Truepoles[currentIndx][1]
+                if (!Truepoles.includes([x, -y]) && !whichConjpoles.includes(currentIndx)){
+                    tempx = radius + (radius * x);
+                    tempy = radius - (radius * -y);
+                    poles.push([tempx + 32,tempy + 32]);
+                    conjucatedPoles.push([currentIndx, poles.length-1])
+                    whichConjpoles.push(currentIndx)
+                }
+            }
+            DrawZerosPoles()
+    }
+
+        function Delete(){
+            if (zeroFlag){
+                zeros.splice(currentIndx,1);
+                for(var idx=0; idx<conjucatedZeros.length; idx++){
+                    if (conjucatedZeros[idx][0] === currentIndx){
+                        var conjIdx = conjucatedZeros[idx][1]-1;
+                        zeros.splice(conjIdx,1);
+                        conjucatedZeros.splice(conjIdx,1);
+                    }
+                }
+                DrawZerosPoles()
+            }
+            else if(poleFlag){
+                poles.splice(currentIndx,1);
+                for(var idx=0; idx<conjucatedPoles.length; idx++){
+                    if (conjucatedPoles[idx][0] === currentIndx){
+                        var conjIdx = conjucatedPoles[idx][1]-1 ;
+                        poles.splice(conjIdx,1);
+                        conjucatedPoles.splice(conjIdx,1);
+                    }
+                }
+                DrawZerosPoles()
             }
         }
-
+        
         function clearZeros() {
             zeros = [];
+            conjucatedZeros = [];
+            whichConjzeros = [];
             DrawZerosPoles()
-
         };
 
         function clearPoles() {
             poles = [];
+            conjucatedPoles = [];
+            whichConjpoles = [];
             DrawZerosPoles();
         };
 
         function clearAll() {
             poles = [];
             zeros = [];
+            conjucatedZeros = [];
+            conjucatedPoles = [];
+            whichConjzeros = [];
+            whichConjpoles = [];
             DrawZerosPoles();
         };
+
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
 
@@ -197,8 +237,8 @@
                 curveType: 'function',
                 legend: { position: 'bottom' }
             };
-
+            
             var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
+            
             chart.draw(data, options);
         }

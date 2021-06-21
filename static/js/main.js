@@ -242,3 +242,45 @@
             
             chart.draw(data, options);
         }
+
+//==================================================================================SASA
+        var Data = {};
+        Data.zeros = zeros;
+        Data.poles = poles;
+        var points;
+        $(document).ready(function() {
+            $('#draw').bind('click', function() {
+                $.getJSON('/draw_Mag_and_Phase', {
+                    data: JSON.stringify(Data),
+                  }, function(data) {
+                   console.log(data);
+                  });
+                  return false;
+                    });
+            });
+		
+			// $(function() {
+			//   $('a#process_input').bind('click', function() {
+			// 	$.getJSON('/background_process', {
+			// 	  proglang: $('input[name="proglang"]').val(),
+			// 	}, function(data) {
+			// 	  $("#result").text(data.result);
+			// 	});
+			// 	return false;
+			//   });
+			// });
+
+
+
+    //         $.ajax({
+    //             headers: { "Accept": "application/json"},
+    //             type: 'GET',
+    //             url: '/draw_Mag_and_Phase',
+    //             crossDomain: true,
+    //             beforeSend: function(xhr){
+    //                 xhr.withCredentials = true;
+    //           },
+    //             success: function(data, textStatus, request){
+    //                 console.log(data);
+    //             }
+    //  });

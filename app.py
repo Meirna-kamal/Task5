@@ -25,5 +25,4 @@ def draw_Mag_and_Phase():
     print(a)
     w, h = signal.freqz(b, a)
 
-    print("a7a")
     return jsonify(w)

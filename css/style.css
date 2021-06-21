@@ -80,12 +80,26 @@ body {
     display: inline-block;
 }
 
-.curve_chart {
-    padding: 0px 0px;
-    width: 100%;
+
+/* .magGraph {
+    width: 700px;
+    display: inline-block;
 }
 
-.curve2 {
-    width: 100% !important;
-    height: 400px;
+.PhaseGraph {
+    width: 200px;
+    display: inline-block;
+} */
+
+.graph {
+    width: 700px;
+    float: left;
+}
+
+.graph2 {
+    float: left !important;
+}
+
+.correctedPhase {
+    width: 700px;
 }

@@ -1,6 +1,4 @@
-body {
-    background-color: rgb(231, 231, 231);
-}
+
 
 .banner {
     background-image: url(../img/Banner4Cropped.jpg);
@@ -50,56 +48,44 @@ body {
     background-color: white;
 }
 
-
-/* .myCanvas {
-    border-style: solid;
-    width: 80%;
-    margin: auto;
-} */
-
-.graphSection {
-    /* width: 80%; */
-    margin: auto;
-    background-color: white;
-}
-
 .myCanvas {
     background-color: white;
     border: 1px solid black;
-    margin: 35px 35px;
+    margin-top: 140px;
+    margin-right:100px;
     padding: 10px 10px;
     /* margin: auto !important; */
 }
-
-.UnitCircleButtons {
-    margin-left: 30px;
-    padding-bottom: 30px;
-}
-
-.dropdown {
-    display: inline-block;
-}
-
-
-/* .magGraph {
-    width: 700px;
-    display: inline-block;
-}
-
-.PhaseGraph {
-    width: 200px;
-    display: inline-block;
-} */
-
-.graph {
-    width: 700px;
-    float: left;
-}
-
 .graph2 {
     float: left !important;
 }
+.firstSection{
+    padding-left: 100px;
+}
+.clear{
+    clear: both;
+}
 
-.correctedPhase {
-    width: 700px;
+.graph {
+    width: 600px;
+    float: left;
+}
+.label{
+    margin-left: 100px;
+}
+.secondLabel{
+    margin-left:450px;
+}
+.buttons{
+    margin-top: 50px;
+}
+.thirdLabel{
+    margin-left: 250px
+}
+.fourthLabel{margin-left: 500px;}
+
+.Avalue{
+    margin-left:660px;
+    margin-bottom: 60px;
+    margin-top: 30px;
 }

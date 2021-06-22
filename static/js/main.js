@@ -271,62 +271,56 @@
 
 
 
-        function makeArray(start, end) {
-            return Array(end - start + 1).fill().map((_, idx) => start + idx)
-        }
-        var values = makeArray(0, 500);
-        var magnitudeGraph = {
-            x: values,
-            y: values,
-            type: 'scatter'
-        };
-
-
-        var data = [magnitudeGraph];
-
-        var layout = {
-            yaxis: { domain: [0, 0.8] },
-            legend: { traceorder: 'reversed' },
-
-        };
-
-        Plotly.newPlot('magGraph', data, layout);
-
-        var phaseGraph2 = {
-            x: values,
-            y: values,
-            type: 'scatter',
-            color: 'green'
-        };
-
-
-        var data2 = [phaseGraph2];
-
-        var layout2 = {
-            yaxis: { domain: [0, 0.8] },
-            legend: { traceorder: 'reversed' },
-
-        };
-
-        Plotly.newPlot('PhaseGraph', data2, layout2);
+// Magnitude graph
+var magnitudeGraph = {
+    x: processedData.frequencies,
+    y: processedData.magnitude,
+    type: 'scatter'
+};
+var data = [magnitudeGraph];
+var layout = {
+    yaxis: { domain: [0, 0.8] },
+    legend: { traceorder: 'reversed' },
+};
+Plotly.newPlot('magGraph', data, layout);
 
 
 
+// Phase graph before filter
+var phaseGraph2 = {
+    x: processedData.frequencies,
+    y: processedData.phase_before_filter,
+    type: 'scatter',
+    color: 'green'
+};
+var data2 = [phaseGraph2];
+var layout2 = {
+    yaxis: { domain: [0, 0.8] },
+    legend: { traceorder: 'reversed' },
+};
+Plotly.newPlot('PhaseGraph', data2, layout2);
 
-        var correctedPhase = {
-            x: values,
-            y: values,
-            type: 'scatter',
-            color: 'green'
-        };
 
 
-        var data3 = [correctedPhase];
+// Phase graph after filter
+var correctedPhase = {
+    x: processedData.frequencies,
+    y: processedData.phase_after_filter,
+    type: 'scatter',
+    color: 'green'
+};
+var data3 = [correctedPhase];
+var layout2 = {
+    yaxis: { domain: [0, 0.8] },
+    legend: { traceorder: 'reversed' },
+};
+Plotly.newPlot('correctedPhase', data3, layout2);
 
-        var layout2 = {
-            yaxis: { domain: [0, 0.8] },
-            legend: { traceorder: 'reversed' },
 
-        };
 
-        Plotly.newPlot('correctedPhase', data3, layout2);
+// Value of A
+function getSelectValue()
+{
+    var selectedAValue = document.getElementById("list").value;
+}
+getSelectValue();

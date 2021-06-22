@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template
-import os, json
+import json, cmath
 from flask_cors import CORS
-from magPhase import *
+from FreqResponse import *
 
 app = Flask(__name__)
 CORS(app)
@@ -18,11 +18,25 @@ def index():
 def draw_Mag_and_Phase():
 
     data = json.loads(request.args.get("data"))
-    print(data["zeros"])
-    print(data["poles"])
-    b, a = signal.zpk2tf(data["zeros"], data["poles"], 1)
-    print(b)
-    print(a)
-    w, h = signal.freqz(b, a)
+    zeros, poles = [], []
+    for zero in data["zeros"]:
+        zeros.append(zero[0] + zero[1] * 1j)
 
-    return jsonify(w)
+    for pole in data["poles"]:
+        poles.append(pole[0] + pole[1] * 1j)
+
+    (
+        frequencies,
+        magnitude,
+        phase_before_filter,
+        phase_after_filter,
+    ) = calculate_frq_response(zeros, poles)
+
+    data = {
+        "frequencies": frequencies.tolist(),
+        "magnitude": magnitude.tolist(),
+        "phase_before_filter": phase_before_filter.tolist(),
+        "phase_after_filter": phase_after_filter.tolist(),
+    }
+
+    return jsonify(data)

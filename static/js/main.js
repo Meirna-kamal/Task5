@@ -244,46 +244,33 @@
         }
 
 //==================================================================================SASA
-        var Data = {};
-        Data.zeros = zeros;
-        Data.poles = poles;
-        var points;
+        var Data = {},processedData={};
+        // processedData = {
+        //     "frequencies"
+        //     "magnitude"
+        //     "phase_before_filter"
+        //     "phase_after_filter"
+        // }
         $(document).ready(function() {
             $('#draw').bind('click', function() {
+                Data.zeros = Truezeros;
+                Data.poles = Truepoles;
+                //Data.allPass=variable  //TODO
                 $.getJSON('/draw_Mag_and_Phase', {
                     data: JSON.stringify(Data),
                   }, function(data) {
-                   console.log(data);
+                processedData=data;
                   });
                   return false;
                     });
             });
+            
 		
-			// $(function() {
-			//   $('a#process_input').bind('click', function() {
-			// 	$.getJSON('/background_process', {
-			// 	  proglang: $('input[name="proglang"]').val(),
-			// 	}, function(data) {
-			// 	  $("#result").text(data.result);
-			// 	});
-			// 	return false;
-			//   });
-			// });
+//==================================================================================SASA
 
 
 
-    //         $.ajax({
-    //             headers: { "Accept": "application/json"},
-    //             type: 'GET',
-    //             url: '/draw_Mag_and_Phase',
-    //             crossDomain: true,
-    //             beforeSend: function(xhr){
-    //                 xhr.withCredentials = true;
-    //           },
-    //             success: function(data, textStatus, request){
-    //                 console.log(data);
-    //             }
-    //  });
+
         function makeArray(start, end) {
             return Array(end - start + 1).fill().map((_, idx) => start + idx)
         }

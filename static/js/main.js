@@ -6,6 +6,7 @@
         // flags to know which one to be moved
         zeroFlag = false;
         poleFlag = false;
+        filter_flag = false;
 
         var conjucateFlag = false;
         //poles values related to the html coordinates
@@ -220,29 +221,11 @@
             DrawZerosPoles();
         };
 
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Year', 'Magnitude', 'Phase'],
-                ['2004', 1000, 400],
-                ['2005', 1170, 460],
-                ['2006', 660, 1120],
-                ['2007', 1030, 540]
-            ]);
-
-            var options = {
-                title: 'Frequency Response',
-                curveType: 'function',
-                legend: { position: 'bottom' }
-            };
-            
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-            
-            chart.draw(data, options);
-        }
-
+// Value of A
+// function getSelectValue()
+// {
+//     a = document.getElementById("list").value;
+// }
 //==================================================================================SASA
         var Data = {},processedData={};
         // processedData = {
@@ -255,72 +238,65 @@
             $('#draw').bind('click', function() {
                 Data.zeros = Truezeros;
                 Data.poles = Truepoles;
+                Data.a = document.getElementById("list").value;
                 //Data.allPass=variable  //TODO
                 $.getJSON('/draw_Mag_and_Phase', {
                     data: JSON.stringify(Data),
-                  }, function(data) {
+                }, function(data) {
                 processedData=data;
-                  });
-                  return false;
+                });
+                drawChart()
+                return false;
                     });
             });
             
 		
 //==================================================================================SASA
-
-
-
-
-// Magnitude graph
-var magnitudeGraph = {
-    x: processedData.frequencies,
-    y: processedData.magnitude,
-    type: 'scatter'
-};
-var data = [magnitudeGraph];
-var layout = {
-    yaxis: { domain: [0, 0.8] },
-    legend: { traceorder: 'reversed' },
-};
-Plotly.newPlot('magGraph', data, layout);
-
-
-
-// Phase graph before filter
-var phaseGraph2 = {
-    x: processedData.frequencies,
-    y: processedData.phase_before_filter,
-    type: 'scatter',
-    color: 'green'
-};
-var data2 = [phaseGraph2];
-var layout2 = {
-    yaxis: { domain: [0, 0.8] },
-    legend: { traceorder: 'reversed' },
-};
-Plotly.newPlot('PhaseGraph', data2, layout2);
-
-
-
-// Phase graph after filter
-var correctedPhase = {
-    x: processedData.frequencies,
-    y: processedData.phase_after_filter,
-    type: 'scatter',
-    color: 'green'
-};
-var data3 = [correctedPhase];
-var layout2 = {
-    yaxis: { domain: [0, 0.8] },
-    legend: { traceorder: 'reversed' },
-};
-Plotly.newPlot('correctedPhase', data3, layout2);
-
-
-
-// Value of A
-function getSelectValue()
-{
-    var selectedAValue = document.getElementById("list").value;
+function drawChart() {
+    Plotly.deleteTraces('PhaseGraph', 0);
+    Plotly.deleteTraces('magGraph', 0);
+    
+    var magnitudeGraph = {
+        x: processedData.frequencies,
+        y: processedData.magnitude,
+        type: 'scatter'
+    };
+    var data = [magnitudeGraph];
+    var layout = {
+        yaxis: { domain: [0, 0.8] },
+        legend: { traceorder: 'reversed' },
+    };
+    Plotly.newPlot('magGraph', data, layout);
+    
+    if (!filter_flag){
+        // Phase graph before filter
+        var phaseGraph2 = {
+            x: processedData.frequencies,
+            y: processedData.phase_before_filter,
+            type: 'scatter',
+            color: 'green'
+        };
+        var data2 = [phaseGraph2];
+        var layout2 = {
+            yaxis: { domain: [0, 0.8] },
+            legend: { traceorder: 'reversed' },
+        };
+        Plotly.newPlot('PhaseGraph', data2, layout2);
+    }
+    else if(filter_flag){
+        // Phase graph after filter
+        var correctedPhase = {
+            x: processedData.frequencies,
+            y: processedData.phase_after_filter,
+            type: 'scatter',
+            color: 'green'
+        };
+        var data3 = [correctedPhase];
+        var layout2 = {
+            yaxis: { domain: [0, 0.8] },
+            legend: { traceorder: 'reversed' },
+        };
+        Plotly.newPlot('PhaseGraph', data3, layout2);
+    }
 }
-getSelectValue();
+

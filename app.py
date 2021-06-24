@@ -30,7 +30,7 @@ def draw_Mag_and_Phase():
         magnitude,
         phase_before_filter,
         phase_after_filter,
-    ) = calculate_frq_response(zeros, poles, a = data["a"])
+    ) = calculate_frq_response(zeros, poles, data["a"])
 
     data = {
         "frequencies": frequencies.tolist(),

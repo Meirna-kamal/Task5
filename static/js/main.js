@@ -221,6 +221,55 @@
             DrawZerosPoles();
         };
 
+        function drawChart() {
+            Plotly.deleteTraces('PhaseGraph', 0);
+            Plotly.deleteTraces('magGraph', 0);
+            
+            var magnitudeGraph = {
+                x: processedData.frequencies,
+                y: processedData.magnitude,
+                type: 'scatter'
+            };
+            var data = [magnitudeGraph];
+            var layout = {
+                yaxis: { domain: [0, 0.8] },
+                legend: { traceorder: 'reversed' },
+            };
+            Plotly.newPlot('magGraph', data, layout);
+            
+            if (!filter_flag){
+                // Phase graph before filter
+                var phaseGraph2 = {
+                    x: processedData.frequencies,
+                    y: processedData.phase_before_filter,
+                    type: 'scatter',
+                    color: 'green'
+                };
+                var data2 = [phaseGraph2];
+                var layout2 = {
+                    yaxis: { domain: [0, 0.8] },
+                    legend: { traceorder: 'reversed' },
+                };
+                Plotly.newPlot('PhaseGraph', data2, layout2);
+            }
+            else if(filter_flag){
+                // Phase graph after filter
+                var correctedPhase = {
+                    x: processedData.frequencies,
+                    y: processedData.phase_after_filter,
+                    type: 'scatter',
+                    color: 'green'
+                };
+                var data3 = [correctedPhase];
+                var layout2 = {
+                    yaxis: { domain: [0, 0.8] },
+                    legend: { traceorder: 'reversed' },
+                };
+                Plotly.newPlot('PhaseGraph', data3, layout2);
+            }
+        }
+        
+        
 // Value of A
 // function getSelectValue()
 // {
@@ -244,6 +293,7 @@
                     data: JSON.stringify(Data),
                 }, function(data) {
                 processedData=data;
+                
                 });
                 drawChart()
                 return false;
@@ -252,51 +302,3 @@
             
 		
 //==================================================================================SASA
-function drawChart() {
-    Plotly.deleteTraces('PhaseGraph', 0);
-    Plotly.deleteTraces('magGraph', 0);
-    
-    var magnitudeGraph = {
-        x: processedData.frequencies,
-        y: processedData.magnitude,
-        type: 'scatter'
-    };
-    var data = [magnitudeGraph];
-    var layout = {
-        yaxis: { domain: [0, 0.8] },
-        legend: { traceorder: 'reversed' },
-    };
-    Plotly.newPlot('magGraph', data, layout);
-    
-    if (!filter_flag){
-        // Phase graph before filter
-        var phaseGraph2 = {
-            x: processedData.frequencies,
-            y: processedData.phase_before_filter,
-            type: 'scatter',
-            color: 'green'
-        };
-        var data2 = [phaseGraph2];
-        var layout2 = {
-            yaxis: { domain: [0, 0.8] },
-            legend: { traceorder: 'reversed' },
-        };
-        Plotly.newPlot('PhaseGraph', data2, layout2);
-    }
-    else if(filter_flag){
-        // Phase graph after filter
-        var correctedPhase = {
-            x: processedData.frequencies,
-            y: processedData.phase_after_filter,
-            type: 'scatter',
-            color: 'green'
-        };
-        var data3 = [correctedPhase];
-        var layout2 = {
-            yaxis: { domain: [0, 0.8] },
-            legend: { traceorder: 'reversed' },
-        };
-        Plotly.newPlot('PhaseGraph', data3, layout2);
-    }
-}
-

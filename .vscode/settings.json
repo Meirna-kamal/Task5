@@ -1,3 +1,4 @@
 {
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "python.pythonPath": "/Users/mostafaayad/.pyenv/versions/3.7.10/bin/python"
 }

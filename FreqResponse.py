@@ -13,7 +13,9 @@ def calculate_frq_response(zerosArray, polesArray, a=-0.5, k=1):
     magnitude = 20 * log10(abs(H))
     phase_before_filter = np.unwrap(np.angle(H))
 
-    w, h = scipy.signal.freqz([-a, 1.0], [1.0, -a])
+    zerosPass = [a]
+    polesPass = [1 / float(a)] 
+    w, h = scipy.signal.freqz(zerosPass, polesPass)
     phase_Ap = np.unwrap(np.angle(h))
 
     phase_after_filter = np.add(phase_before_filter, phase_Ap)
